@@ -67,3 +67,16 @@ router.get('/:id', validateUser, async (req, res) => {
 
 // Middlewares
 
+function validateUser(req, res, next) {
+    const tokenId = jwt.decode(localStorage.getItem('token')).id;
+    const { id } = req.params;
+
+    if(tokenId == id) {
+        next();
+    }
+    else {
+        res.status(400).json({ message: 'unauthorized user: cannot perform this action' });
+    }
+}
+
+module.exports = router;
