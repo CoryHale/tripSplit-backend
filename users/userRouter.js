@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const Users = require('./userModel');
 
+// POST user
 router.post('/', async (req, res) => {
     const userData = req.body;
 
@@ -16,6 +17,7 @@ router.post('/', async (req, res) => {
     }
 })
 
+// UPDATE user
 router.put('/:id', validateUser, async (req, res) => {
     const userData = req.body;
     const { id } = req.params;
@@ -29,6 +31,7 @@ router.put('/:id', validateUser, async (req, res) => {
     }
 })
 
+// DELETE user
 router.delete('/:id', validateUser, async (req, res) => {
     const { id } = req.params;
 
@@ -47,6 +50,7 @@ router.delete('/:id', validateUser, async (req, res) => {
     }
 })
 
+// GET user by id
 router.get('/:id', validateUser, async (req, res) => {
     const { id } = req.params;
 
