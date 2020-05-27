@@ -113,3 +113,5 @@ function validateUser(req, res, next) {
         res.status(400).json({ message: 'unauthorized user: cannot perform this action' });
     }
 }
+
+module.exports = router;

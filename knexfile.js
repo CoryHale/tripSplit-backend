@@ -1,4 +1,15 @@
 require('dotenv').config();
+const pg = require('pg');
+pg.defaults.ssl = true;
+
+const localConnection = {
+    host: 'localhost',
+    database: 'trip-split',
+    user: 'cory',
+    password: 'lambda4life'
+}
+
+const prodDBConnection = process.env.DATABASE_URL || localConnection;
 
 module.exports = {
     // The development and testing environments will be hosted on your local machine. Create a .env file and set the 5 connection variable values:
@@ -9,9 +20,11 @@ module.exports = {
     //  DB_TESTING - The name of your database for your testing environment
 
     development: {
-        client: 'pg',
+        client: 'sqlite3',
 
-        connection: process.env.DATABASE_URL,
+        connection: {
+            filename: './data/trip-split.db3'
+        },
         pool: {
             min: 2,
             max: 10
@@ -26,8 +39,12 @@ module.exports = {
     },
 
     staging: {
-        client: 'pg',
-        connection: process.env.DATABASE_URL,
+        client: 'postgressql',
+        connection: {
+            database: 'trip-split',
+            user: 'cory',
+            password: 'lambda4life'
+        },
         pool: {
             min: 2,
             max: 10
@@ -43,7 +60,7 @@ module.exports = {
 
     production: {
         client: 'pg',
-        connection: process.env.DATABASE_URL,
+        connection: prodDBConnection,
         pool: {
             min: 2,
             max: 10
@@ -58,12 +75,13 @@ module.exports = {
     },
 
     testing: {
-        client: 'pg',
+        client: 'sqlite3',
         connection: {
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_TESTING
+            filename: './data/test.db3'
+        },
+        pool: {
+            min: 2,
+            max: 10
         },
         migrations: {
             directory: './data/migrations'
